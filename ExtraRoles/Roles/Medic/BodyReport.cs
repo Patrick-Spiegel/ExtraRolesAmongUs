@@ -14,19 +14,40 @@ namespace ExtraRolesMod.Roles.Medic
 
         public static string ParseBodyReport(BodyReport br)
         {
-            System.Console.WriteLine(br.KillAge);
-            if (br.KillAge > Main.Config.medicKillerColorDuration * 1000)
+            var age = Math.Round(br.KillAge / 1000);
+            if (age >= Main.Config.medicKillerColorDuration)
             {
-                return $"Body Report: The corpse is too old to gain information from. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+                return @$"Body Report:
+The corpse is too old to gain information from.
+The victim appears to have died {age}s ago";
             }
             else if (br.DeathReason == (DeathReason)3)
             {
-                return $"Body Report (Officer): The cause of death appears to be suicide! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
-
+                return $@"Body Report:
+The cause of death appears to be suicide. 
+The victim died {age}s ago";
             }
-            else if (br.KillAge < Main.Config.medicKillerNameDuration * 1000)
+            else if (age < Main.Config.medicKillerNameDuration)
             {
-                return $"Body Report: The killer appears to be {br.Killer.name}! (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+                var colors = new Dictionary<byte, string>()
+                {
+                    {0, "red"},
+                    {1, "blue"},
+                    {2, "green"},
+                    {3, "pink"},
+                    {4, "orange"},
+                    {5, "yellow"},
+                    {6, "black"},
+                    {7, "white"},
+                    {8, "purple"},
+                    {9, "brown"},
+                    {10, "cyan"},
+                    {11, "lime"},
+                };
+                var typeOfColor = colors[br.Killer.Data.ColorId];
+                return $@"Body Report:
+Traces of a {typeOfColor} fabric has been found on the victim. 
+The victim appears to have died {age}s ago";
             }
             else
             {
@@ -47,7 +68,9 @@ namespace ExtraRolesMod.Roles.Medic
                     {11, "lighter"},
                 };
                 var typeOfColor = colors[br.Killer.Data.ColorId];
-                return $"Body Report: The killer appears to be a {typeOfColor} color. (Killed {Math.Round(br.KillAge / 1000)}s ago)";
+                return $@"Body Report:
+Traces of a {typeOfColor} fabric has been found on the victim. 
+The victim appears to have died {age}s ago";
             }
         }
     }

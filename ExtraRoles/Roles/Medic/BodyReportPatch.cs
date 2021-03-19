@@ -41,8 +41,11 @@ namespace ExtraRoles
 
                             if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
                             {
-                                // Send the message through chat only visible to the medic
-                                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, reportMsg);
+                                foreach (var item in reportMsg.Split(Environment.NewLine))
+                                {
+                                    // Send the message through chat only visible to the medic
+                                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, item);
+                                }
                             }
                         }
                     }
